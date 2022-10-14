@@ -11,7 +11,7 @@ env:
   TZ: 'Asia/Shanghai'
 
 permissions:
-  contents: read|write
+  contents: write
 
 jobs:
   build:
@@ -38,7 +38,10 @@ jobs:
           git clone 'https://github.com/Ricardo-Evans/daily_fudan_core.git'
       - name: Install dependencies
         run: |
+          cd daily_fudan_core
           python -m pip install --upgrade pip
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
       - name: Daily fudan
-        run: python3 ./daily_fudan_core/dailyFudan.py '${{ secrets.FUDAN }}'
+        run: |
+          cd daily_fudan_core
+          python3 ./dailyFudan.py '${{ secrets.FUDAN }}'
