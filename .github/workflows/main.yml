@@ -26,8 +26,6 @@ jobs:
           python-version: "3.10"
       - name: auto edit everyday
         run: python3 ./edit.py
-      - name: daily fudan
-        run: python3 ./run.py '${{ secrets.FUDAN }}'
       - name: push
         run: |
           git config user.name 'Github Actions'
@@ -35,3 +33,12 @@ jobs:
           git add .
           git commit -m 'update by github actions'
           git push
+      - name: Prepare daily fudan
+        run: |
+          git clone 'https://github.com/Ricardo-Evans/daily_fudan_core.git'
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+      - name: Daily fudan
+        run: python3 ./daily_fudan_core/dailyFudan.py '${{ secrets.FUDAN }}'
